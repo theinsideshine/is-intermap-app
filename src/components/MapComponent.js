@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Loader } from "@googlemaps/js-api-loader";
+import { googleMapsApiKey, mapId } from '../config';
 
 const containerStyle = {
   width: '100%',
@@ -12,7 +13,7 @@ const MapComponent = ({ coordinates }) => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyDTkTw2Bi3WCoPyYrnSHNj2ae6sdyBsPqk",
+      apiKey: googleMapsApiKey,
       version: "weekly",
       libraries: ["places", "marker"]
     });
@@ -21,7 +22,7 @@ const MapComponent = ({ coordinates }) => {
       const map = new window.google.maps.Map(mapRef.current, {
         center: coordinates || defaultCenter,
         zoom: 15,
-        mapId: 'a023efeafb83a937', // Aquí agregamos el Map ID
+        mapId: mapId, // Aquí agregamos el Map ID
       });
 
       if (coordinates) {
