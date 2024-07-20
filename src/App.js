@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React from 'react';
+import MapComponent from './components/MapComponent';
 
-function App() {
+const App = () => {
+  const coordinates = { lat: -34.397, lng: 150.644 }; // Coordenadas predeterminadas
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MapComponent coordinates={coordinates} />
     </div>
   );
-}
+};
 
 export default App;
+
