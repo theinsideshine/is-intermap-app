@@ -1,12 +1,13 @@
-// App.js
-import React from 'react';
+import React, { useState } from 'react';
 import MapComponent from './components/MapComponent';
+import AddressForm from './components/AddressForm';
 
 const App = () => {
-  const coordinates = { lat: -34.397, lng: 150.644 }; // Coordenadas predeterminadas
+  const [coordinates, setCoordinates] = useState({ lat: -34.62, lng: -58.45 }); // Coordenadas predeterminadas
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
+      <AddressForm setCoordinates={setCoordinates} />
       <MapComponent coordinates={coordinates} />
     </div>
   );

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Loader } from "@googlemaps/js-api-loader";
-import { googleMapsApiKey, mapId } from '../config';
+import React, { useEffect, useRef, useMemo } from 'react';
+import { loadGoogleMaps } from '../googleMapsLoader';
+import { mapId } from '../config'; // Asegúrate de que mapId está importado correctamente
 
 const containerStyle = {
   width: '100%',
@@ -9,36 +9,35 @@ const containerStyle = {
 
 const MapComponent = ({ coordinates }) => {
   const mapRef = useRef(null);
-  const defaultCenter = { lat: -34.397, lng: 150.644 }; // Coordenadas predeterminadas
+  const markerRef = useRef(null);
+
+  const defaultCenter = useMemo(() => ({ lat: -34.62, lng: -58.45 }), []);
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: googleMapsApiKey,
-      version: "weekly",
-      libraries: ["places", "marker"]
-    });
-
-    loader.load().then(() => {
+    loadGoogleMaps().then(() => {
       const map = new window.google.maps.Map(mapRef.current, {
         center: coordinates || defaultCenter,
         zoom: 15,
-        mapId: mapId, // Aquí agregamos el Map ID
+        mapId: mapId, // Asegúrate de que mapId esté correctamente configurado aquí
       });
 
-      if (coordinates) {
-        if (window.google.maps.marker && window.google.maps.marker.AdvancedMarkerElement) {
-          new window.google.maps.marker.AdvancedMarkerElement({
-            position: coordinates,
-            map,
-          });
-        } else {
-          console.error('AdvancedMarkerElement is not available');
-        }
-      }
+      markerRef.current = new window.google.maps.marker.AdvancedMarkerElement({
+        position: coordinates || defaultCenter,
+        map,
+      });
+
+      map.addListener('click', (e) => {
+        const clickedLat = e.latLng.lat();
+        const clickedLng = e.latLng.lng();
+        console.log(`Latitud: ${clickedLat}, Longitud: ${clickedLng}`);
+
+        markerRef.current.position = { lat: clickedLat, lng: clickedLng };
+      });
+
     }).catch(e => {
       console.error('Error loading Google Maps:', e);
     });
-  }, [coordinates],); // Solo dependemos de coordinates
+  }, [coordinates, defaultCenter]);
 
   return <div ref={mapRef} style={containerStyle}></div>;
 };
