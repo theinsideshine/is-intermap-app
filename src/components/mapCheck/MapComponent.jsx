@@ -1,11 +1,20 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import { loadGoogleMaps } from './googleMapsLoader';
-import { mapId } from '../../config'; // Asegúrate de que mapId esté importado correctamente
+import { mapId } from '../../config';
+import useThemedSwal from '../../helpers/useThemedSwal';
+
 
 const containerStyle = {
-  width: '100%',
-  height: '400px',
+  width: '100%', // Asegura que ocupe el 100% del ancho disponible
+  height: '70vh', // Ajusta la altura al 70% de la altura de la ventana
+  maxWidth: 'none', // Evita cualquier limitación de ancho
+};
+
+const buttonContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: '10px',
 };
 
 const MapComponent = ({ coordinates }) => {
@@ -13,7 +22,8 @@ const MapComponent = ({ coordinates }) => {
   const markerRef = useRef(null);
   const polygonRef = useRef(null);
   const pathCoords = useRef([]);
-  const [buttonsCreated, setButtonsCreated] = useState(false);
+
+  const Swal = useThemedSwal();
 
   const defaultCenter = useMemo(() => ({ lat: -34.62, lng: -58.45 }), []);
 
@@ -22,7 +32,7 @@ const MapComponent = ({ coordinates }) => {
       const map = new window.google.maps.Map(mapRef.current, {
         center: coordinates || defaultCenter,
         zoom: 15,
-        mapId: mapId, // Asegúrate de que mapId esté correctamente configurado aquí
+        mapId: mapId,
       });
 
       markerRef.current = new window.google.maps.marker.AdvancedMarkerElement({
@@ -35,14 +45,11 @@ const MapComponent = ({ coordinates }) => {
         const clickedLng = e.latLng.lng();
         console.log(`Latitud: ${clickedLat}, Longitud: ${clickedLng}`);
 
-        // Actualizar la posición del marcador
         markerRef.current.position = { lat: clickedLat, lng: clickedLng };
 
-        // Añadir el punto al array de coordenadas
         pathCoords.current.push({ lat: clickedLat, lng: clickedLng });
         console.log('Coordenadas actuales:', pathCoords.current);
 
-        // Actualizar el polígono en el mapa
         if (polygonRef.current) {
           polygonRef.current.setPath(pathCoords.current);
         } else {
@@ -57,66 +64,55 @@ const MapComponent = ({ coordinates }) => {
           });
         }
       });
-
-      // Crear y mostrar botones solo una vez
-      if (!buttonsCreated) {
-        setButtonsCreated(true);
-
-        // Crear botón para enviar el polígono
-        const sendButton = document.createElement('button');
-        sendButton.textContent = 'Enviar Polígono';
-        sendButton.onclick = () => {
-          console.log('Enviando polígono...');
-          if (pathCoords.current.length > 0) {
-            const polygonCoords = pathCoords.current.map(coord => [coord.lat, coord.lng]);
-            console.log('Coordenadas del polígono para enviar:', polygonCoords);
-
-            axios.post('http://localhost:5000/check_intersection', {
-              polygon_coords: polygonCoords
-            })
-            .then(response => {
-              console.log('Respuesta del servidor:', response.data);
-            })
-            .catch(error => {
-              console.error('Error al enviar los datos:', error);
-            });
-          } else {
-            console.log('No se ha creado un polígono.');
-          }
-        };
-
-        // Crear botón para reiniciar el mapa
-        const resetButton = document.createElement('button');
-        resetButton.textContent = 'Reiniciar Mapa';
-        resetButton.onclick = () => {
-          console.log('Reiniciando el mapa...');
-          if (polygonRef.current) {
-            polygonRef.current.setMap(null); // Eliminar el polígono del mapa
-            polygonRef.current = null;
-          }
-          pathCoords.current = []; // Limpiar las coordenadas del polígono
-        };
-
-        // Añadir botones al DOM
-        const buttonContainer = document.getElementById('button-container');
-        if (!buttonContainer) {
-          const newButtonContainer = document.createElement('div');
-          newButtonContainer.id = 'button-container';
-          newButtonContainer.appendChild(sendButton);
-          newButtonContainer.appendChild(resetButton);
-          document.body.appendChild(newButtonContainer);
-        } else {
-          buttonContainer.innerHTML = ''; // Limpiar los botones antiguos
-          buttonContainer.appendChild(sendButton);
-          buttonContainer.appendChild(resetButton);
-        }
-      }
     }).catch(e => {
       console.error('Error loading Google Maps:', e);
     });
-  }, [coordinates, defaultCenter, buttonsCreated]);
+  }, [coordinates, defaultCenter]);
 
-  return <div ref={mapRef} style={containerStyle}></div>;
+  const handleSendPolygon = () => {
+    if (pathCoords.current.length > 0) {
+      const polygonCoords = pathCoords.current.map(coord => [coord.lat, coord.lng]);
+      console.log('Coordenadas del polígono para enviar:', polygonCoords);
+
+      axios.post('http://localhost:5000/check_intersection', {
+        polygon_coords: polygonCoords
+      })
+      .then(response => {
+        console.log('Respuesta del servidor:', response.data);
+        console.log('Interferencia:', response.data.intersects);
+        if (response.data.intersects===false){
+          Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
+          handleResetMap();
+        }else {
+          Swal.fire('Hay interferencia', 'Revise la opcion VER', 'warning');
+        }
+
+      })
+      .catch(error => {
+        console.error('Error al enviar los datos:', error);
+      });
+    } else {
+      console.log('No se ha creado un polígono.');
+    }
+  };
+
+  const handleResetMap = () => {
+    if (polygonRef.current) {
+      polygonRef.current.setMap(null);
+      polygonRef.current = null;
+    }
+    pathCoords.current = [];
+  };
+
+  return (
+    <div style={{ width: '100%' }}> {/* Asegura que el contenedor principal ocupe todo el ancho */}
+      <div ref={mapRef} style={containerStyle}></div>
+      <div style={buttonContainerStyle}>
+        <button onClick={handleSendPolygon}>Enviar Polígono</button>
+        <button onClick={handleResetMap} style={{ marginLeft: '10px' }}>Reiniciar Mapa</button>
+      </div>
+    </div>
+  );
 };
 
 export default MapComponent;

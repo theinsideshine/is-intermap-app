@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import MapComponent from './components/mapCheck/MapComponent';
-import AddressForm from './components/mapCheck/AddressForm';
+import  AddressForm   from '../components/mapCheck/AddressForm'
+import  MapComponent   from '../components/mapCheck/MapComponent'
 
 
-const App = () => {
+const CheckPage = () => {
   const [coordinates, setCoordinates] = useState({ lat: -34.62, lng: -58.45 }); // Coordenadas predeterminadas
 
   return (
@@ -14,5 +14,5 @@ const App = () => {
   );
 };
 
-export default App;
+export default CheckPage;
 
