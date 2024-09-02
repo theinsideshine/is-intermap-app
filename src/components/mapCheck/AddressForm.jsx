@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { loadGoogleMaps } from './googleMapsLoader';
+import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 
 const AddressForm = ({ setCoordinates }) => {
   const inputRef = useRef(null);

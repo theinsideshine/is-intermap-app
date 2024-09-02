@@ -88,8 +88,8 @@ export const Navbar = () => {
           <Button color="inherit" component={Link} to="/intercheck">
             Chequear
           </Button>
-          <Button color="inherit" component={Link} to="/">
-            Ver
+          <Button color="inherit" component={Link} to="/viewkml">
+            Ver kml
           </Button>
           <Button color="inherit" component={Link} to="/">
             Acerca de
@@ -130,9 +130,9 @@ export const Navbar = () => {
                 <ListItemIcon>
                   <MusicNoteIcon sx={{ color: theme.palette.primary.main }} />
                 </ListItemIcon>
-                <ListItemText primary="Ver" sx={{ color: theme.palette.text.primary }} />
+                <ListItemText primary="VerKml" sx={{ color: theme.palette.text.primary }} />
               </ListItem>
-              <ListItem button component={Link} to="/" onClick={closeMenu}>
+              <ListItem button component={Link} to="/viewkml" onClick={closeMenu}>
                 <ListItemIcon>
                   <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
                 </ListItemIcon>

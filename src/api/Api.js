@@ -10,3 +10,11 @@ export const checkIntersection = (polygonCoords) => {
     polygon_coords: polygonCoords
   });
 };
+
+// Nueva función para el endpoint de intersección con tolerancia
+export const checkIntersectionWithTolerance = ({ coord, tolerance }) => {
+  return api.post('/check_intersection_with_tolerance', {
+    coord,
+    tolerance
+  });
+};

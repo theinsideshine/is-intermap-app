@@ -1,5 +1,6 @@
 The intention of the project is to be able to test the concept of an app that, when entering a position on the map, determines if it interferes with a network of high-tension power cables.
 
+const kmlUrl = `https://storage.googleapis.com/mi-bucket-para-kml/cable_polygon_47fa436da71f439c98453ece17c58169.kml`;
 
 # Getting Started with Create React App
 

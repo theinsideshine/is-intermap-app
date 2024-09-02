@@ -1,5 +1,5 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { googleMapsApiKey } from '../../config';
+import { googleMapsApiKey } from '../config';
 
 const loader = new Loader({
   apiKey: googleMapsApiKey,
