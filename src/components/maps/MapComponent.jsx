@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useMemo } from 'react';
-import axios from 'axios';
 import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId } from '../../config';
 import useThemedSwal from '../../helpers/useThemedSwal';
 import { updateKmlDataInSessionStorage } from '../../helpers/storageHelper';
-
+import { checkIntersection, checkIntersectionWithTolerance } from '../../apis/mapsApi';
 
 const containerStyle = {
-  width: '100%', // Asegura que ocupe el 100% del ancho disponible
-  height: '70vh', // Ajusta la altura al 70% de la altura de la ventana
-  maxWidth: 'none', // Evita cualquier limitación de ancho
+  width: '100%',
+  height: '70vh',
+  maxWidth: 'none',
 };
 
 const buttonContainerStyle = {
@@ -23,9 +22,7 @@ const MapComponent = ({ coordinates }) => {
   const markerRef = useRef(null);
   const polygonRef = useRef(null);
   const pathCoords = useRef([]);
-
   const Swal = useThemedSwal();
-
   const defaultCenter = useMemo(() => ({ lat: -34.62, lng: -58.45 }), []);
 
   useEffect(() => {
@@ -70,49 +67,60 @@ const MapComponent = ({ coordinates }) => {
     });
   }, [coordinates, defaultCenter]);
 
+  // Función auxiliar para procesar la respuesta del servidor
+  const handleServerResponse = (response) => {
+    console.log('Respuesta del servidor:', response.data);
+    console.log('Interferencia:', response.data.intersects);
 
-  // El método handleSendPolygon ahora llama a updateKmlDataInSessionStorage con ambos datos
-const handleSendPolygon = () => {
-  if (pathCoords.current.length > 0) {
-    const polygonCoords = pathCoords.current.map(coord => [coord.lat, coord.lng]);
-    console.log('Coordenadas del polígono para enviar:', polygonCoords);
+    if (response.data.intersects === false) {
+      Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
+      handleResetMap();
+    } else {
+      Swal.fire('Hay interferencia', 'Revise la opción VER KML', 'warning');
+    }
 
-    axios.post('http://localhost:5000/check_intersection', {
-      polygon_coords: polygonCoords
-    })
-    .then(response => {
-      console.log('Respuesta del servidor:', response.data);
-      console.log('Interferencia:', response.data.intersects);
+    const fileName = response.data.generated_file;
+    const representativePoint = response.data.representative_point;
 
-      if (response.data.intersects === false) {
-        Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
-        handleResetMap();
-      } else {
-        Swal.fire('Hay interferencia', 'Revise la opción VER', 'warning');
-      }
+    if (fileName) {
+      const fileUrl = `https://storage.googleapis.com/mi-bucket-para-kml/${fileName}`;
+      updateKmlDataInSessionStorage(fileUrl, representativePoint);
+      console.log('Archivo guardado en:', fileUrl);
+    }
+  };
 
-      // Extraer el nombre del archivo y el punto representativo del response
-      const fileName = response.data.generated_file;
-      const representativePoint = response.data.representative_point;
+  const handleSendPolygon = () => {
+    if (pathCoords.current.length > 0) {
+      const polygonCoords = pathCoords.current.map(coord => [coord.lat, coord.lng]);
+      console.log('Coordenadas del polígono para enviar:', polygonCoords);
 
-      if (fileName) {
-        // Construir la URL completa del archivo en Google Cloud Storage
-        const fileUrl = `https://storage.googleapis.com/mi-bucket-para-kml/${fileName}`;
-        
-        // Usar la función para actualizar sessionStorage y despachar el evento para el KML y el punto representativo
-        updateKmlDataInSessionStorage(fileUrl, representativePoint);
-        console.log('Archivo guardado en:', fileUrl);
-      }
-    })
-    .catch(error => {
-      console.error('Error al enviar los datos:', error);
-    });
-  } else {
-    console.log('No se ha creado un polígono.');
-  }
-};
-  
-  
+      checkIntersection(polygonCoords)
+        .then(handleServerResponse)
+        .catch(error => {
+          console.error('Error al enviar los datos:', error);
+        });
+    } else {
+      console.log('No se ha creado un polígono.');
+    }
+  };
+
+  const handleSendPointWithTolerance = () => {
+    if (pathCoords.current.length > 0) {
+      const { lat, lng } = pathCoords.current[pathCoords.current.length - 1];
+      const tolerance = 100;
+
+      console.log('Punto capturado para enviar:', { lat, lng });
+      console.log('Tolerancia:', tolerance);
+
+      checkIntersectionWithTolerance({ coord: [lat, lng], tolerance })
+        .then(handleServerResponse)
+        .catch(error => {
+          console.error('Error al enviar los datos:', error);
+        });
+    } else {
+      console.log('No se ha capturado ningún punto.');
+    }
+  };
 
   const handleResetMap = () => {
     if (polygonRef.current) {
@@ -123,10 +131,11 @@ const handleSendPolygon = () => {
   };
 
   return (
-    <div style={{ width: '100%' }}> {/* Asegura que el contenedor principal ocupe todo el ancho */}
+    <div style={{ width: '100%' }}>
       <div ref={mapRef} style={containerStyle}></div>
       <div style={buttonContainerStyle}>
         <button onClick={handleSendPolygon}>Enviar Polígono</button>
+        <button onClick={handleSendPointWithTolerance} style={{ marginLeft: '10px' }}>Enviar Punto con Tolerancia</button>
         <button onClick={handleResetMap} style={{ marginLeft: '10px' }}>Reiniciar Mapa</button>
       </div>
     </div>
@@ -134,3 +143,4 @@ const handleSendPolygon = () => {
 };
 
 export default MapComponent;
+

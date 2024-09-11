@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useMediaQuery } from "@mui/material";
-import { HomePage } from './pages/HomePage';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import CheckPage from './pages/CheckPage';
-import ViewKmlPage from './pages/ViewKmlPage';
+import { HomePage } from './pages/home/HomePage';
+import CheckPage from './pages/maps/CheckPage';
+import ViewKmlPage from './pages/maps/ViewKmlPage';
 
 export const AppRoutes = ({ toggleDarkMode }) => {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");

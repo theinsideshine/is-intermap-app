@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import  AddressForm   from '../components/mapCheck/AddressForm'
-import  MapComponent   from '../components/mapCheck/MapComponent'
+import  AddressForm   from '../../components/maps/AddressForm'
+import  MapComponent   from '../../components/maps/MapComponent'
 
 
 const CheckPage = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { CssBaseline, Typography, useMediaQuery, Grid, Box, Button } from '@mui/material';
-import torreImage from '../assets/torre_tesla.png';
+import torreImage from '../../assets/torre_tesla.png';
 import { useTheme } from '@mui/material/styles';
 
 
@@ -26,7 +26,7 @@ export const HomePage = () => {
         <Grid container spacing={2} justifyContent="center">
           {imagePaths.map((path, index) => (
             <Grid item xs={12} sm={6} key={index}> {/* Cambia el tamaño de la cuadrícula para la imagen */}
-              <img src={path} alt={`Image ${index}`} style={{ width: '100%', borderRadius: '30px', filter: theme.palette.mode === 'dark' ? 'brightness(0.5)' : 'brightness(1)' }} />
+              <img src={path} alt={`La torre de testla ${index}`} style={{ width: '100%', borderRadius: '30px', filter: theme.palette.mode === 'dark' ? 'brightness(0.5)' : 'brightness(1)' }} />
             </Grid>
           ))}
         </Grid>

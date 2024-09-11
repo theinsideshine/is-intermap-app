@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import useThemedSwal from '../helpers/useThemedSwal';
-import { loadGoogleMaps } from '../helpers/googleMapsLoader';
-import { mapId } from '../config';
+import useThemedSwal from '../../helpers/useThemedSwal';
+import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
+import { mapId } from '../../config';
 
 const containerStyle = {
   width: '100%',
@@ -70,7 +70,7 @@ const ViewKmlPage = () => {
     }).catch(e => {
       console.error('Error loading Google Maps:', e);
     });
-  }, []);
+  }, [Swal]);
 
   const handleRemoveKmlLayer = () => {
     if (kmlLayerRef.current) {
