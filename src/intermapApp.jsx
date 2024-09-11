@@ -2,7 +2,9 @@ import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { GlobalStyles } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AppRoutes } from './AppRoutes'; // Asegúrate de que el nombre del archivo sea correcto (mayúsculas y minúsculas)
+import { AppRoutes } from './AppRoutes'; 
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const theme = createTheme({
   palette: {
@@ -54,7 +56,9 @@ export const IntermapApp = () => {
           },
         }}
       />
-      <AppRoutes />
+      <Provider store={store}>
+        <AppRoutes />
+      </Provider>
     </ThemeProvider>
   );
 };

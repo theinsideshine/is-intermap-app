@@ -16,8 +16,8 @@ export function CopyrightRight(props) {
         <Link color="inherit" href="https://github.com/theinsideshine/is-intermap-app" variant="body2">
           GitHub/FrontEnd 
         </Link>{'-'}
-        <Link color="inherit" href="" variant="body2">
-          Demo de uso
+        <Link color="inherit" href="https://www.youtube.com/watch?v=oUnR56ElMRo" variant="body2">
+          Prueba de concepto
         </Link>{' '}
 
       </Typography>

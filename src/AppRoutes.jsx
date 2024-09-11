@@ -4,10 +4,14 @@ import { useMediaQuery } from "@mui/material";
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HomePage } from './pages/home/HomePage';
-import CheckPage from './pages/maps/CheckPage';
-import ViewKmlPage from './pages/maps/ViewKmlPage';
+import { LoginPage } from './auth/pages/LoginPage';
+import { useSelector } from 'react-redux';
+import { UserRoutes } from './routes/UserRoutes';
+
 
 export const AppRoutes = ({ toggleDarkMode }) => {
+
+  const { isAuth } = useSelector(state => state.auth);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   // Hook useState para manejar kmlUrl y pointCoord
@@ -51,9 +55,21 @@ useEffect(() => {
         }}
       >
         <Routes>
+
+        {
+                        isAuth
+                            ? (
+                                <Route path='/*' element={<UserRoutes  kmlUrl={kmlUrl} pointCoord={pointCoord}/>} />
+                            )
+                            : <>
+                                <Route path='/login' element={<LoginPage />} />
+                                {/* <Route path='/signup' element={<SignUp />} />  */}
+                                <Route path='/*' element={<HomePage/>} />                               
+                            </>
+
+                    }
           <Route path='/*' element={<HomePage />} />
-          <Route path="/intercheck" element={<CheckPage />} />
-          <Route path="/viewkml" element={<ViewKmlPage kmlUrl={kmlUrl} pointCoord={pointCoord} />} />
+         
         </Routes>
       </div>
       <Footer toggleDarkMode={toggleDarkMode} />

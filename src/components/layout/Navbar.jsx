@@ -14,23 +14,39 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Hidden from "@mui/material/Hidden";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import SearchIcon from "@mui/icons-material/Search";
 import AlbumIcon from "@mui/icons-material/Album";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PeopleIcon from "@mui/icons-material/People";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 import { useTheme, alpha } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
+import { useAuth } from "../../auth/hooks/useAuth";
 
 
 export const Navbar = () => {
+  
+  
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { login, handlerLogout } = useAuth();
+
+  const clickLogin = () => {
+    navigate('/login');
+  };
+
+  const clickSignup = () => {
+    navigate('/signup');
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -85,15 +101,23 @@ export const Navbar = () => {
         )}
 
         <Hidden smDown>
-          <Button color="inherit" component={Link} to="/intercheck">
-            Chequear
-          </Button>
-          <Button color="inherit" component={Link} to="/viewkml">
-            Ver kml
-          </Button>
+
+        {login.isAdmin && (
+          <>
+            <Button color="inherit" component={Link} to="/intercheck">
+             Chequear
+            </Button>
+            <Button color="inherit" component={Link} to="/viewkml">
+              Ver kml
+            </Button>         
+          
+          </>
+         )} 
+
           <Button color="inherit" component={Link} to="/">
             Acerca de
           </Button>
+          
           {/*  {login.isAdmin && (
             <Button color="inherit" component={Link} to="/">
               Usuarios
@@ -120,33 +144,39 @@ export const Navbar = () => {
         <Hidden mdUp>
           <Drawer anchor="left" open={menuOpen} onClose={closeMenu}>
             <List sx={{ width: "250px", bgcolor: theme.palette.background.paper }}>
+            {login.isAdmin && ( 
+                <>
               <ListItem button component={Link} to="/" onClick={closeMenu}>
                 <ListItemIcon>
                   <AlbumIcon sx={{ color: theme.palette.primary.main }} />
                 </ListItemIcon>
                 <ListItemText primary="Chequear" sx={{ color: theme.palette.text.primary }} />
               </ListItem>
+              
               <ListItem button component={Link} to="/intercheck" onClick={closeMenu}>
                 <ListItemIcon>
                   <MusicNoteIcon sx={{ color: theme.palette.primary.main }} />
                 </ListItemIcon>
                 <ListItemText primary="VerKml" sx={{ color: theme.palette.text.primary }} />
               </ListItem>
-              <ListItem button component={Link} to="/viewkml" onClick={closeMenu}>
-                <ListItemIcon>
-                  <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
-                </ListItemIcon>
-                <ListItemText primary="A cerca de" sx={{ color: theme.palette.text.primary }} />
-              </ListItem>
-              {/*  {login.isAdmin && ( */}
+             
+              
+                
               <ListItem button component={Link} to="/" onClick={closeMenu}>
                 <ListItemIcon>
                   <PeopleIcon sx={{ color: theme.palette.primary.main }} />
                 </ListItemIcon>
                 <ListItemText primary="Usuarios" sx={{ color: theme.palette.text.primary }} />
               </ListItem>
-              {/*   )} */}
+              </>
+                 )} 
             </List>
+            <ListItem button component={Link} to="/" onClick={closeMenu}>
+                <ListItemIcon>
+                  <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
+                </ListItemIcon>
+                <ListItemText primary="A cerca de" sx={{ color: theme.palette.text.primary }} />
+              </ListItem>
           </Drawer>
         </Hidden>
 
@@ -198,10 +228,9 @@ export const Navbar = () => {
             color="text.primary"
             sx={{ marginRight: "10px", fontFamily: "'Courier New', Courier, monospace" }}
           >
-            {/*   {login.user?.username} */}
-
+               {login.user?.username} 
           </Typography>
-          {/* {login.user?.username ? (
+           {login.user?.username ? (
             <IconButton color="inherit" onClick={handlerLogout}>
               <LogoutIcon />
             </IconButton>
@@ -209,12 +238,12 @@ export const Navbar = () => {
             <>
               <IconButton color="inherit" onClick={clickLogin}>
                 <LoginIcon />
-              </IconButton> */}
-          {/* <IconButton color="inherit" onClick={clickSignup}>
+              </IconButton> 
+           <IconButton color="inherit" onClick={clickSignup}>
                 <AppRegistrationIcon />
-              </IconButton> */}
-          {/*   </>
-          )}  */}
+              </IconButton> 
+             </>
+          )}  
         </div>
       </Toolbar>
     </AppBar>
