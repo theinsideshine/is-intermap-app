@@ -15,7 +15,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Hidden from "@mui/material/Hidden";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../auth/hooks/useAuth";
 import SearchIcon from "@mui/icons-material/Search";
 import AlbumIcon from "@mui/icons-material/Album";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
@@ -27,7 +27,7 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
 import { useTheme, alpha } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
-import { useAuth } from "../../auth/hooks/useAuth";
+
 
 
 export const Navbar = () => {
@@ -35,10 +35,10 @@ export const Navbar = () => {
   
   const theme = useTheme();
   const navigate = useNavigate();
-
+  const { login, handlerLogout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { login, handlerLogout } = useAuth();
+ 
 
   const clickLogin = () => {
     navigate('/login');
@@ -232,7 +232,7 @@ export const Navbar = () => {
           </Typography>
            {login.user?.username ? (
             <IconButton color="inherit" onClick={handlerLogout}>
-              <LogoutIcon />
+              <PeopleIcon />
             </IconButton>
           ) : (
             <>

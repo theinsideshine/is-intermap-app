@@ -11,10 +11,8 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: initialLogin,
     reducers: {
-        onLogin: (state, action) => {
-            console.log("action: ",action);
-            state.isAuth = true;
-            // Usar directamente los valores de isAdmin e isSuperUser proporcionados
+        onLogin: (state, action) => {            
+            state.isAuth = true;           
             state.isAdmin = action.payload.isAdmin;
             state.isSuperUser = action.payload.isSuperUser;
             state.user = action.payload.user;
@@ -30,4 +28,3 @@ export const authSlice = createSlice({
 
 export const { onLogin, onLogout } = authSlice.actions;
 
-export default authSlice.reducer;

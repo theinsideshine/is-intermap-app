@@ -41,21 +41,23 @@ export const useAuth = () => {
             isAdmin = false;
             isSuperUser = false;
         }
+        const user = { username: username }
+         // Actualizar el estado en Redux con el usuario y los roles
+         dispatch(onLogin({
+            user,  // Actualiza el estado con el nombre de usuario
+            isAdmin,  // Actualiza el estado según el rol
+            isSuperUser,  // Actualiza el estado según el rol
+        }));
 
         sessionStorage.setItem('login', JSON.stringify({
             isAuth: true,
             isAdmin: isAdmin,
             isSuperUser: isSuperUser,
-            user: username,
+            user
         }));
         sessionStorage.setItem('token', `Bearer ${token}`);
 
-        // Actualizar el estado en Redux con el usuario y los roles
-        dispatch(onLogin({
-            user: { username },  // Actualiza el estado con el nombre de usuario
-            isAdmin,  // Actualiza el estado según el rol
-            isSuperUser,  // Actualiza el estado según el rol
-        }));
+       
         navigate('/intercheck');
     };
     const handlerLogin = async ({ username, password }) => {
@@ -70,7 +72,7 @@ export const useAuth = () => {
              // Llamar al método para guardar y decodificar el token
              saveTokenAndDecode(token);
              
-            //navigate('/albums'); 
+       
         } catch (error) {
             if (error.response?.status === 401) {
                 Swal.fire('Error Login', 'Username o password invalidos', 'error');
@@ -91,9 +93,9 @@ export const useAuth = () => {
     }
     return {
         login: {
-            user,
-            isSuperUser,
+            user,            
             isAdmin,
+            isSuperUser,
             isAuth,
         },
         handlerLogin,

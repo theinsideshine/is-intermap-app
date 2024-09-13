@@ -47,16 +47,13 @@ useEffect(() => {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Navbar />
-      <div
-        style={{ 
-          flex: 1,
-          marginBottom: "20px",
-          padding: isSmallScreen ? "10px" : "20px",
-        }}
-      >
-        <Routes>
+      <div style={{ flex: 1,
+                    marginBottom: "20px",
+                    padding: isSmallScreen ? "10px" : "20px", // Ajusta el espacio según el breakpoint           
+                    }}>
+            <Routes>
 
-        {
+                 {
                         isAuth
                             ? (
                                 <Route path='/*' element={<UserRoutes  kmlUrl={kmlUrl} pointCoord={pointCoord}/>} />
@@ -67,8 +64,7 @@ useEffect(() => {
                                 <Route path='/*' element={<HomePage/>} />                               
                             </>
 
-                    }
-          <Route path='/*' element={<HomePage />} />
+                    }         
          
         </Routes>
       </div>
