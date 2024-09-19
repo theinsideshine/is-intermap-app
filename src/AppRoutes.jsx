@@ -7,6 +7,7 @@ import { HomePage } from './pages/home/HomePage';
 import { LoginPage } from './auth/pages/LoginPage';
 import { useSelector } from 'react-redux';
 import { UserRoutes } from './routes/UserRoutes';
+import { SignUp } from './auth/pages/SignUpPage';
 
 
 export const AppRoutes = ({ toggleDarkMode }) => {
@@ -60,7 +61,7 @@ useEffect(() => {
                             )
                             : <>
                                 <Route path='/login' element={<LoginPage />} />
-                                {/* <Route path='/signup' element={<SignUp />} />  */}
+                                <Route path='/signup' element={<SignUp/>} /> 
                                 <Route path='/*' element={<HomePage/>} />                               
                             </>
 

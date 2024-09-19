@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId } from '../../config';
 import useThemedSwal from '../../helpers/useThemedSwal';
@@ -6,9 +6,10 @@ import { updateKmlDataInSessionStorage } from '../../helpers/storageHelper';
 import { checkIntersection, checkIntersectionWithTolerance } from '../../apis/mapsApi';
 
 const containerStyle = {
-  width: '100%',
+  width: '90%', // Cambiar a 90% para ocupar más espacio horizontal
   height: '70vh',
   maxWidth: 'none',
+  margin: '0 auto', // Centrar el mapa horizontalmente
 };
 
 const buttonContainerStyle = {
@@ -17,7 +18,20 @@ const buttonContainerStyle = {
   marginTop: '10px',
 };
 
+const validationMessageStyle = {
+  marginTop: '30px', // Mayor margen superior para separar del botón
+  padding: '10px',
+  textAlign: 'center',
+  backgroundColor: '#f0f0f0',
+  borderRadius: '5px',
+  border: '1px solid #ccc',
+  color: '#333',
+  width: '60%',
+  margin: '0 auto', // Centrar el mensaje
+};
+
 const MapComponent = ({ coordinates }) => {
+  const [validationMessage, setValidationMessage] = useState(''); // Estado para el mensaje
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const polygonRef = useRef(null);
@@ -73,9 +87,11 @@ const MapComponent = ({ coordinates }) => {
     console.log('Interferencia:', response.data.intersects);
 
     if (response.data.intersects === false) {
+      setValidationMessage(`En la dirección seleccionada no hay interferencia.`);
       Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
       handleResetMap();
     } else {
+      setValidationMessage(`En la dirección seleccionada hay interferencia.`);
       Swal.fire('Hay interferencia', 'Revise la opción VER KML', 'warning');
     }
 
@@ -138,9 +154,14 @@ const MapComponent = ({ coordinates }) => {
         <button onClick={handleSendPointWithTolerance} style={{ marginLeft: '10px' }}>Enviar Punto con Tolerancia</button>
         <button onClick={handleResetMap} style={{ marginLeft: '10px' }}>Reiniciar Mapa</button>
       </div>
+      {/* Mostrar el mensaje de validación en un recuadro */}
+      {validationMessage && (
+        <div style={validationMessageStyle}>
+          {validationMessage}
+        </div>
+      )}
     </div>
   );
 };
 
 export default MapComponent;
-

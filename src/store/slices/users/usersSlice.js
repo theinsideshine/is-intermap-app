@@ -4,12 +4,26 @@ export const initialUserForm = {
     id: 0,
     username: '',
     password: '',
+    role: '',
+    cuit: '',
+    name: '',
+    address: '',
+    phone:  '',
+    mobile: '',
+    contact: '',
     email: '',
-    admin: false,
+   
 }
 const initialUserErrors = {
     username: '',
     password: '',
+    role: '',
+    cuit: '',
+    name: '',
+    address: '',
+    phone:  '',
+    mobile: '',
+    contact: '',
     email: '',
 }
 export const usersSlice = createSlice({

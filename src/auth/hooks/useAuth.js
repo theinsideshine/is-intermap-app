@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { loginUser } from "../services/authService";
+import { loginUser, registerUser } from "../services/authService";
 import { useDispatch, useSelector } from "react-redux";
 import { onLogin, onLogout } from "../../store/slices/auth/authSlice";
 import { jwtDecode } from 'jwt-decode';
-
+import { addUser,loadingUserError,onCloseUserForm } from "../../store/slices/users/usersSlice";
 
 
 export const useAuth = () => {
@@ -91,6 +91,49 @@ export const useAuth = () => {
         sessionStorage.removeItem('login');
         sessionStorage.clear();
     }
+
+    const handlerRegisterUser = async (user) => {
+        console.log(user);
+
+      // if (!login.isAdmin) return;
+
+       let response;
+       try {
+         
+            response = await registerUser(user);
+            console.log(response);
+            dispatch(addUser(response.data))          
+
+           Swal.fire( 'Usuario Creado' , 'success');
+          
+           
+           handlerCloseRegisterForm(); // Borra errores
+           
+           navigate('/login');
+       } catch (error) {
+           console.log(error);
+           if (error.response && error.response.status == 400) {
+               
+               dispatch(loadingUserError(error.response.data));
+
+           } else if (error.response && error.response.status == 409){
+
+             //  dispatch(loadingUserError(error.response.data.errors));                
+           }
+           else if (error.response && error.response.status == 500 ) {
+
+                   console.log('error: ',error);               
+           } else if (error.response?.status == 401) {
+               handlerLogout();
+           } else {
+               throw error;
+           }
+       }
+   }
+   const handlerCloseRegisterForm = () => {
+    dispatch(onCloseUserForm());
+    dispatch(loadingUserError({}));//Borra los errores
+}
     return {
         login: {
             user,            
@@ -100,5 +143,6 @@ export const useAuth = () => {
         },
         handlerLogin,
         handlerLogout,
+        handlerRegisterUser,
     }
 }
