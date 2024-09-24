@@ -110,20 +110,16 @@ export const useAuth = () => {
            handlerCloseRegisterForm(); // Borra errores
            
            navigate('/login');
-       } catch (error) {
+       } catch (error) { /* SOLO SE PROBO ERROR 400 */ 
            console.log(error);
-           if (error.response && error.response.status == 400) {
+           if (error.response && error.response.status === 400) {
                
                dispatch(loadingUserError(error.response.data));
 
-           } else if (error.response && error.response.status == 409){
-
-             //  dispatch(loadingUserError(error.response.data.errors));                
-           }
-           else if (error.response && error.response.status == 500 ) {
+           }else if (error.response && error.response.status === 500 ) {
 
                    console.log('error: ',error);               
-           } else if (error.response?.status == 401) {
+           } else if (error.response?.status === 401) {
                handlerLogout();
            } else {
                throw error;

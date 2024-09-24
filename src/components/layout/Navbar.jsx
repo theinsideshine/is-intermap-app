@@ -21,6 +21,7 @@ import AlbumIcon from "@mui/icons-material/Album";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PeopleIcon from "@mui/icons-material/People";
+import InterferenceIcon from "@mui/icons-material/Warning"; // Importa un icono para interferencias
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
@@ -28,17 +29,12 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { useTheme, alpha } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 
-
-
 export const Navbar = () => {
-  
-  
   const theme = useTheme();
   const navigate = useNavigate();
   const { login, handlerLogout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
- 
 
   const clickLogin = () => {
     navigate('/login');
@@ -52,7 +48,6 @@ export const Navbar = () => {
     setMenuOpen(!menuOpen);
   };
 
-
   const closeMenu = () => {
     setMenuOpen(false);
   };
@@ -62,11 +57,7 @@ export const Navbar = () => {
   };
 
   const handleSearchIconClick = () => {
-    /*   if (usernames.includes(searchQuery)) {
-        navigateHomePageAlbum();
-      } else {
-        userNoexist();
-      } */
+    // Aquí iría la lógica de búsqueda
   };
 
   const handleSearchSubmit = (event) => {
@@ -101,28 +92,31 @@ export const Navbar = () => {
         )}
 
         <Hidden smDown>
-
-        {login.isAdmin && (
-          <>
-            <Button color="inherit" component={Link} to="/intercheck">
-             Chequear
-            </Button>
-            <Button color="inherit" component={Link} to="/viewkml">
-              Ver kml
-            </Button>         
-          
-          </>
-         )} 
+          {login.isAdmin && (
+            <>
+              <Button color="inherit" component={Link} to="/intercheck">
+                Chequear
+              </Button>
+              <Button color="inherit" component={Link} to="/viewkml">
+                Ver kml
+              </Button>         
+            </>
+          )}
 
           <Button color="inherit" component={Link} to="/">
             Acerca de
           </Button>
-          
-          {/*  {login.isAdmin && (
-            <Button color="inherit" component={Link} to="/">
-              Usuarios
-            </Button>
-          )} */}
+
+          {(login.isAdmin || login.isSuperUser) && (
+            <>
+              <Button color="inherit" component={Link} to="/users">
+                Usuarios
+              </Button>
+              <Button color="inherit" component={Link} to="/interferences">
+                Interferencias
+              </Button> {/* Nuevo botón para la página de interferencias */}
+            </>
+          )}
         </Hidden>
 
         <div style={{ flexGrow: 1 }} />
@@ -144,44 +138,39 @@ export const Navbar = () => {
         <Hidden mdUp>
           <Drawer anchor="left" open={menuOpen} onClose={closeMenu}>
             <List sx={{ width: "250px", bgcolor: theme.palette.background.paper }}>
-            {login.isAdmin && ( 
+              {login.isAdmin && ( 
                 <>
-              <ListItem button component={Link} to="/" onClick={closeMenu}>
-                <ListItemIcon>
-                  <AlbumIcon sx={{ color: theme.palette.primary.main }} />
-                </ListItemIcon>
-                <ListItemText primary="Chequear" sx={{ color: theme.palette.text.primary }} />
-              </ListItem>
-              
-              <ListItem button component={Link} to="/intercheck" onClick={closeMenu}>
-                <ListItemIcon>
-                  <MusicNoteIcon sx={{ color: theme.palette.primary.main }} />
-                </ListItemIcon>
-                <ListItemText primary="VerKml" sx={{ color: theme.palette.text.primary }} />
-              </ListItem>
-             
-              
-                
-              <ListItem button component={Link} to="/" onClick={closeMenu}>
-                <ListItemIcon>
-                  <PeopleIcon sx={{ color: theme.palette.primary.main }} />
-                </ListItemIcon>
-                <ListItemText primary="Usuarios" sx={{ color: theme.palette.text.primary }} />
-              </ListItem>
-              </>
-                 )} 
+                  <ListItem button component={Link} to="/intercheck" onClick={closeMenu}>
+                    <ListItemIcon>
+                      <MusicNoteIcon sx={{ color: theme.palette.primary.main }} />
+                    </ListItemIcon>
+                    <ListItemText primary="VerKml" sx={{ color: theme.palette.text.primary }} />
+                  </ListItem>
+                  <ListItem button component={Link} to="/users" onClick={closeMenu}>
+                    <ListItemIcon>
+                      <PeopleIcon sx={{ color: theme.palette.primary.main }} />
+                    </ListItemIcon>
+                    <ListItemText primary="Usuarios" sx={{ color: theme.palette.text.primary }} />
+                  </ListItem>
+                  <ListItem button component={Link} to="/interferences" onClick={closeMenu}>
+                    <ListItemIcon>
+                      <InterferenceIcon sx={{ color: theme.palette.primary.main }} /> {/* Icono para interferencias */}
+                    </ListItemIcon>
+                    <ListItemText primary="Interferencias" sx={{ color: theme.palette.text.primary }} />
+                  </ListItem>
+                </>
+              )}
             </List>
             <ListItem button component={Link} to="/" onClick={closeMenu}>
-                <ListItemIcon>
-                  <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
-                </ListItemIcon>
-                <ListItemText primary="A cerca de" sx={{ color: theme.palette.text.primary }} />
-              </ListItem>
+              <ListItemIcon>
+                <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
+              </ListItemIcon>
+              <ListItemText primary="Acerca de" sx={{ color: theme.palette.text.primary }} />
+            </ListItem>
           </Drawer>
         </Hidden>
 
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
-          {/* <span style={{ color: "red" }}>Click y Enter</span> */}
           <div
             style={{
               position: "relative",
@@ -193,7 +182,6 @@ export const Navbar = () => {
               width: "auto",
             }}
           >
-
             <div
               style={{
                 padding: theme.spacing(0, 2),
@@ -205,7 +193,6 @@ export const Navbar = () => {
                 justifyContent: "center",
               }}
             >
-
               <SearchIcon />
             </div>
             <InputBase
@@ -228,25 +215,24 @@ export const Navbar = () => {
             color="text.primary"
             sx={{ marginRight: "10px", fontFamily: "'Courier New', Courier, monospace" }}
           >
-               {login.user?.username} 
+            {login.user?.username} 
           </Typography>
-           {login.user?.username ? (
+          {login.user?.username ? (
             <IconButton color="inherit" onClick={handlerLogout}>
-              <PeopleIcon />
+              <LogoutIcon />
             </IconButton>
           ) : (
             <>
               <IconButton color="inherit" onClick={clickLogin}>
                 <LoginIcon />
               </IconButton> 
-           <IconButton color="inherit" onClick={clickSignup}>
+              <IconButton color="inherit" onClick={clickSignup}>
                 <AppRegistrationIcon />
               </IconButton> 
-             </>
+            </>
           )}  
         </div>
       </Toolbar>
     </AppBar>
   );
 };
-

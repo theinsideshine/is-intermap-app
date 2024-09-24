@@ -62,12 +62,29 @@ export const serviceSaveUser = async ({
     }
 }
 
-export const serviceUpdateUser = async({ id, username, email, admin }) => {
+export const serviceUpdateUser = async({ 
+                                        id,
+                                        username,
+                                        role,
+                                        cuit,
+                                        name,
+                                        address,
+                                        phone,
+                                        mobile,
+                                        contact,
+                                        email ,}) => {
     try {
         return await usersApi.put(`${BASE_URL}/${id}`, {
             username,
+            role,
+            cuit,
+            name,
+            address,
+            phone,
+            mobile,
+            contact,
             email,
-            admin,
+            
         });
     } catch (error) {
         throw error;
