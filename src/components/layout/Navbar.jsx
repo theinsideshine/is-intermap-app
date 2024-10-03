@@ -96,10 +96,7 @@ export const Navbar = () => {
             <>
               <Button color="inherit" component={Link} to="/intercheck">
                 Chequear
-              </Button>
-              <Button color="inherit" component={Link} to="/viewkml">
-                Ver kml
-              </Button>         
+              </Button>                      
             </>
           )}
 
@@ -140,12 +137,7 @@ export const Navbar = () => {
             <List sx={{ width: "250px", bgcolor: theme.palette.background.paper }}>
               {login.isAdmin && ( 
                 <>
-                  <ListItem button component={Link} to="/intercheck" onClick={closeMenu}>
-                    <ListItemIcon>
-                      <MusicNoteIcon sx={{ color: theme.palette.primary.main }} />
-                    </ListItemIcon>
-                    <ListItemText primary="VerKml" sx={{ color: theme.palette.text.primary }} />
-                  </ListItem>
+                  
                   <ListItem button component={Link} to="/users" onClick={closeMenu}>
                     <ListItemIcon>
                       <PeopleIcon sx={{ color: theme.palette.primary.main }} />

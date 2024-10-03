@@ -41,7 +41,7 @@ export const useInterferences = () => {
     }
 
     const handlerAddInterference = async (interference) => {
-        console.log(interference);
+        console.log("handleAddInnterference:" ,interference);
 
         let response;
         try {
@@ -57,9 +57,9 @@ export const useInterferences = () => {
                 (interference.id === 0) ? 
                 'Interferencia Creada' : 
                 'Interferencia Actualizada',
-                (interference.id === 0) ? 
-                'La interferencia ha sido creada con éxito!' : 
-                'La interferencia ha sido actualizada con éxito!',
+                (interference.interference) ? 
+                'No hay interferencia' : 
+                'Si hay interferencia',
                 'success'
             );
             handlerCloseInterferenceForm();

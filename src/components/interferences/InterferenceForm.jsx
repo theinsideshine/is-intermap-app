@@ -10,10 +10,19 @@ export const InterferenceForm = ({ interferenceSelected, handlerCloseForm }) => 
 
   const [interferenceForm, setInterferenceForm] = useState(initialInterferenceForm);
   const { 
-         id,
-         username,
-         email, 
-         company } = interferenceForm;
+          id,
+          username,
+          company ,
+          address_ref,
+          email,
+          coord,
+          polygon_coords,  
+          start,                        
+          last,
+          status,
+          tolerance,
+          url_file
+      } = interferenceForm;
 
   useEffect(() => {
     setInterferenceForm({
@@ -42,38 +51,32 @@ export const InterferenceForm = ({ interferenceSelected, handlerCloseForm }) => 
   return (
     <form onSubmit={onSubmit}>
 
-      <label htmlFor="username">Usuario: </label>
+      <label htmlFor="solicitud">Solicitud: </label>
       <input
         className="form-control my-3 w-75"
-        placeholder="Usuario"
-        name="username"
-        value={username}
+        placeholder="Solicitud"
+        name="solicitud"
+        value={id}
         onChange={onInputChange}
         readOnly={id > 0} 
       />
-      <p className="text-danger">{errors?.username}</p>
+      <p className="text-danger">{errors?.id}</p>
+     
 
-      <label htmlFor="email">Email: </label>
+      <label htmlFor="status">Estado: </label>
       <input
         className="form-control my-3 w-75"
-        placeholder="Email"
-        name="email"
-        value={email}
+        placeholder="Estado"
+        name="status"
+        value={status}
         onChange={onInputChange}
+        
       />
-      <p className="text-danger">{errors?.email}</p>
+      <p className="text-danger">{errors?.status}</p>
 
-      <label htmlFor="company">Empresa: </label>
-      <input
-        className="form-control my-3 w-75"
-        placeholder="Empresa"
-        name="company"
-        value={company}
-        onChange={onInputChange}
-      />
-      <p className="text-danger">{errors?.company}</p>
+     
 
-      <input type="hidden" name="id" value={id} />
+      {/*< input type="hidden" name="id" value={id} /> */}
 
       <div className="d-flex">
         <Button

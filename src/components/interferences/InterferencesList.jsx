@@ -23,9 +23,13 @@ export const InterferencesList = () => {
             <Table aria-label="Interferences Table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Usuario</TableCell>
-                        {!isMobile && <TableCell>Email</TableCell>}
+                        <TableCell>Solicitud</TableCell>
                         {!isMobile && <TableCell>Empresa</TableCell>}
+                        {!isMobile && <TableCell>Direccion</TableCell>}
+                        {!isMobile && <TableCell>Inteferencia</TableCell>}
+                        {!isMobile && <TableCell>Estado</TableCell>}
+                        {!isMobile && <TableCell>Ultimo cambio</TableCell>}
+                        {!isMobile && <TableCell>Inicio</TableCell>}
                         {!login.isAdmin || (
                             <>
                                 <TableCell>Editar</TableCell>
@@ -34,19 +38,34 @@ export const InterferencesList = () => {
                         )}
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody> 
                     {interferences.map(({ 
                         id,
                         username,
+                        company ,
+                        address_ref,
                         email,
-                        company
+                        point_reference,                       
+                        start,                        
+                        last,
+                        status,
+                        url_file,
+                        interference
+
                     }) => (
                         <InterferenceRow
                             key={id}
                             id={id}
                             username={username}
-                            email={email}
                             company={company}
+                            address_ref={address_ref}
+                            email={email}  
+                            point_reference={point_reference}                                                      
+                            start={start}
+                            last={last}
+                            status={status}                            
+                            url_file={url_file}
+                            interference={interference}                                                     
                             isMobile={isMobile}
                         />
                     ))}

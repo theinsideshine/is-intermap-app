@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import useThemedSwal from '../../helpers/useThemedSwal';
 import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId } from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 const containerStyle = {
   width: '100%',
@@ -20,6 +21,7 @@ const ViewKmlPage = () => {
   const kmlLayerRef = useRef(null);
 
   const Swal = useThemedSwal();
+  const navigate = useNavigate(); // Definir useNavigate
 
   useEffect(() => {
     loadGoogleMaps().then(() => {
@@ -72,6 +74,11 @@ const ViewKmlPage = () => {
     });
   }, [Swal]);
 
+    // Manejar la navegación al hacer clic en "Nueva Interferencia"
+    const handleCreateInterference = () => {
+      navigate("/intercheck"); // Navegar a /intercheck
+  };
+
   const handleRemoveKmlLayer = () => {
     if (kmlLayerRef.current) {
       kmlLayerRef.current.setMap(null);
@@ -83,6 +90,7 @@ const ViewKmlPage = () => {
     <div style={{ width: '100%' }}>
       <div ref={mapRef} style={containerStyle}></div>
       <div style={buttonContainerStyle}>
+      <button onClick={handleCreateInterference} style={{ marginLeft: '10px' }}>Crear interferencia</button>
         <button onClick={handleRemoveKmlLayer}>Eliminar Capa KML</button>
       </div>
     </div>

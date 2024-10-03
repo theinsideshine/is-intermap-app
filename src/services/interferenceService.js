@@ -30,27 +30,20 @@ export const serviceSaveInterference = async ({
     company,
     address_ref,
     email,
-    coord,
-    polygon_coords,
-    start,
-    last,
-    status,
-    tolerance,
-    url_file
+    point_reference,    
+    url_file,
+    interference,
 }) => {
+    console.log("serviceSaveInterference: ",username);
     try {
         return await interferencesApi.post(BASE_URL, {
             username,
             company,
             address_ref,
             email,
-            coord,
-            polygon_coords,
-            start,
-            last,
-            status,
-            tolerance,
-            url_file
+            point_reference,    
+            url_file,
+            interference,
         });
     } catch (error) {
         throw error;
@@ -61,30 +54,26 @@ export const serviceSaveInterference = async ({
 export const serviceUpdateInterference = async ({ 
     id,
     username,
-    company,
+    company ,
     address_ref,
     email,
-    coord,
-    polygon_coords,
-    start,
+    point_reference,                       
+    start,                        
     last,
     status,
-    tolerance,
-    url_file
+    url_file,
+    interference
 }) => {
     try {
         return await interferencesApi.put(`${BASE_URL}/${id}`, {
             username,
-            company,
+            company ,
             address_ref,
             email,
-            coord,
-            polygon_coords,
-            start,
-            last,
+            point_reference,             
             status,
-            tolerance,
-            url_file
+            url_file,
+            interference
         });
     } catch (error) {
         throw error;

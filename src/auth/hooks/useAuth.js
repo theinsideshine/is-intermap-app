@@ -58,7 +58,7 @@ export const useAuth = () => {
         sessionStorage.setItem('token', `Bearer ${token}`);
 
        
-        navigate('/intercheck');
+        navigate('/interferences');
     };
     const handlerLogin = async ({ username, password }) => {
 

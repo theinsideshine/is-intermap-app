@@ -7,13 +7,12 @@ export const initialInterferenceForm = {
     company: '',
     address_ref: '',
     email: '',
-    coord: [],
-    polygon_coords: [],
-    start: '',
-    last: '',
+    point_reference: [],    
+    start: '',  // Manteniendo el campo start
+    last: '',   // Manteniendo el campo last
     status: '',
-    tolerance: 0,
     url_file: '',
+    interference: false,  // Nuevo campo booleano
 };
 
 // Estado inicial de los errores
@@ -22,13 +21,12 @@ const initialInterferenceErrors = {
     company: '',
     address_ref: '',
     email: '',
-    coord: '',
-    polygon_coords: '',
+    point_reference: '',  // Cambiado de coord a point_reference
     start: '',
     last: '',
     status: '',
-    tolerance: '',
     url_file: '',
+    interference: '',  // Nuevo campo para errores
 };
 
 // Crear el slice de interferencias
@@ -69,8 +67,8 @@ export const interferencesSlice = createSlice({
             state.visibleForm = false;
         },
         loadingInterferences: (state, { payload }) => {
-            state.interferences = payload.content;
-            state.paginator = payload;
+            state.interferences = payload.content;  // Lista de interferencias
+            state.paginator = payload;  // Paginador
             state.isLoading = false;
         },
         onInterferenceSelectedForm: (state, { payload }) => {

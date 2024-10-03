@@ -8,11 +8,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTheme } from '@mui/material/styles'; // Importa useTheme
 
+
 export const InterferenceRow = ({ 
     id,
     username,
+    company ,
+    address_ref,
     email,
-    company,
+    point_reference,     
+    start,                        
+    last,
+    status,    
+    url_file,
+    interference,
     isMobile
 }) => {
     const theme = useTheme(); // Obtiene el tema personalizado
@@ -21,9 +29,21 @@ export const InterferenceRow = ({
 
     return (
         <TableRow>
-            <TableCell>{username}</TableCell>
-            {!isMobile && <TableCell>{email}</TableCell>}
+            <TableCell>{id}</TableCell>
             {!isMobile && <TableCell>{company}</TableCell>}
+            {!isMobile && <TableCell>{address_ref}</TableCell>}
+            {!isMobile && <TableCell>{interference ? "Si" : "No"}</TableCell>}
+            {!isMobile && <TableCell>{status}</TableCell>}
+            {!isMobile && (
+                    <TableCell>
+                        {new Date(last).toLocaleDateString('en-CA', { timeZone: 'UTC' })}
+                    </TableCell>
+                    )}
+                    {!isMobile && (
+                    <TableCell>
+                        {new Date(start).toLocaleDateString('en-CA', { timeZone: 'UTC' })}
+                    </TableCell>
+                    )}
 
             {!login.isAdmin || (
                 <>
@@ -35,8 +55,15 @@ export const InterferenceRow = ({
                                 handlerInterferenceSelectedForm({
                                     id,
                                     username,
+                                    company ,
+                                    address_ref,
                                     email,
-                                    company
+                                    point_reference,     
+                                    start,                        
+                                    last,
+                                    status,    
+                                    url_file,
+                                    interference,
                                 })
                             }
                         >
