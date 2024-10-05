@@ -91,14 +91,7 @@ export const Navbar = () => {
           </Typography>
         )}
 
-        <Hidden smDown>
-          {login.isAdmin && (
-            <>
-              <Button color="inherit" component={Link} to="/intercheck">
-                Chequear
-              </Button>                      
-            </>
-          )}
+        <Hidden smDown>          
 
           <Button color="inherit" component={Link} to="/">
             Acerca de

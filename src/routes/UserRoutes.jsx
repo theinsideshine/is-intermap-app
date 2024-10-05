@@ -13,8 +13,9 @@ export const UserRoutes = (kmlUrl, pointCoord) => {
                 <Routes>
                     <Route path="users" element={<UsersPage />} />
                     <Route path="users/page/:page" element={<UsersPage />} />
-                    <Route path="/intercheck" element={<CheckPage />} />
+                    <Route path="/intercheck" element={<CheckPage />} />                    
                     <Route path="/viewkml" element={<ViewKmlPage kmlUrl={kmlUrl} pointCoord={pointCoord} />} />
+                    <Route path="/viewkml/view/:id" element={<ViewKmlPage kmlUrl={kmlUrl} pointCoord={pointCoord}/>} /> 
                      {/* Rutas para interferencias */}
                     <Route path="interferences" element={<InterferencePage />} />
                     <Route path="interferences/page/:page" element={<InterferencePage />} />

@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { mapTolerance } from '../../config';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useInterferences } from '../../hooks/useInterferences';
-
+import { InterferencesDetailList } from '../interferences/InterferencesDetailList';
+import { Button } from '@mui/material';
 
 const containerStyle = {
   width: '90%',
@@ -35,7 +36,7 @@ const validationMessageStyle = {
   margin: '0 auto',
 };
 
-const MapComponent = ({ coordinates, email , address, company }) => { // Recibir el email como prop
+const MapComponent = ({ coordinates, email , address, company, isFormValid }) => { // Recibir el email como prop
   const [validationMessage, setValidationMessage] = useState('');
   const mapRef = useRef(null);
   const markerRef = useRef(null);
@@ -257,37 +258,17 @@ const MapComponent = ({ coordinates, email , address, company }) => { // Recibir
       </div>
 
       <div style={buttonContainerStyle}>
-        <button onClick={handleSavePolygon}>Guardar Mapa-Polígono</button>
-        <button onClick={handleSavePoint} style={{ marginLeft: '10px' }}>Guarda Mapa-Punto</button>
-       
-
-      </div>
+            <Button variant="contained" color="primary" onClick={handleSavePolygon} disabled={!isFormValid} >
+                Crear interferencia-Polígono
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSavePoint} style={{ marginLeft: '10px' }}
+            disabled={!isFormValid} 
+            >
+                Crear interferencia-Punto
+            </Button>
+        </div> 
     
-
-       {/* Mostrar la direccion*/}
-       {address && (
-        <div style={validationMessageStyle}>
-          Direccion: {address}
-        </div>
-      )}
-       {/* Mostrar la empresa*/}
-       {company && (
-        <div style={validationMessageStyle}>
-          Empresa: {company}
-        </div>
-      )}
-      {/* Mostrar el email */}
-      {email && (
-        <div style={validationMessageStyle}>
-          email: {email}
-        </div>
-      )}     
-      {/* Mostrar el mensaje de validación en un recuadro */}
-      {validationMessage && (
-        <div style={validationMessageStyle}>
-          {validationMessage}
-        </div>
-      )}
+    
     </div>
   );
 };

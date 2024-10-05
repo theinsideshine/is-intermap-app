@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { TextField, Button, Grid, Container, Box } from '@mui/material';
 import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 
-const AddressForm = ({ setCoordinates, setEmail, setAddress, setCompany }) => {
+const AddressForm = ({ setCoordinates, setEmail, setAddress, setCompany, setIsValid }) => {
   const inputRef = useRef(null);
   const [emailValue, setEmailValue] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -17,23 +18,42 @@ const AddressForm = ({ setCoordinates, setEmail, setAddress, setCompany }) => {
     const value = e.target.value;
     setEmailValue(value);
     setEmail(value);
-
-    if (!isValidEmail(value)) {
-      setEmailError('Email inválido');
-    } else {
-      setEmailError('');
-    }
   };
 
   const handleCompanyChange = (e) => {
     const value = e.target.value;
     setCompanyValue(value);
     setCompany(value);
+  };
 
-    if (!value.trim()) {
+  const handleSubmit = () => {
+    let valid = true; // Variable para rastrear si el formulario es válido
+
+    // Validar email
+    if (!isValidEmail(emailValue)) {
+      setEmailError('Email inválido');
+      valid = false; // Marcar como no válido
+    } else {
+      setEmailError('');
+    }
+
+    // Validar empresa
+    if (!companyValue.trim()) {
       setCompanyError('El nombre de la empresa no puede estar vacío');
+      valid = false; // Marcar como no válido
     } else {
       setCompanyError('');
+    }
+
+    // Actualizar el estado de validación
+    setIsValid(valid);
+
+    // Si es válido, proceder con el envío de datos
+    if (valid) {
+      console.log('Formulario enviado');
+      // Aquí puedes realizar otras acciones como enviar los datos a un servidor
+    } else {
+      console.log('Formulario no válido');
     }
   };
 
@@ -61,37 +81,60 @@ const AddressForm = ({ setCoordinates, setEmail, setAddress, setCompany }) => {
   }, [setCoordinates, setAddress]);
 
   return (
-    <div style={{ marginRight: '20px' }}>
-      {/* Input de dirección */}
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Ingrese la dirección"
-        style={{ width: '300px', padding: '8px', fontSize: '16px', marginBottom: '10px' }}
-      />
+    <Container component="main" maxWidth="sm">
+      <Box sx={{ mt: 4 }}>
+        <Grid container spacing={2}>
+          {/* Dirección */}
+          <Grid item xs={12}>
+            <TextField
+              inputRef={inputRef}
+              fullWidth
+              label="Ingrese la dirección"
+              variant="outlined"
+              size="small"
+            />
+          </Grid>
 
-      {/* Input de empresa */}
-      <input
-        type="text"
-        placeholder="Ingrese la empresa"
-        value={companyValue}
-        onChange={handleCompanyChange}
-        style={{ width: '300px', padding: '8px', fontSize: '16px', marginBottom: '5px' }}
-      />
-      {companyError && <p style={{ color: 'red' }}>{companyError}</p>} {/* Mensaje de error */}
+          {/* Empresa */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Ingrese la empresa"
+              variant="outlined"
+              size="small"
+              value={companyValue}
+              onChange={handleCompanyChange}
+              error={!!companyError}
+              helperText={companyError}
+            />
+          </Grid>
 
-      {/* Input de email */}
-      <input
-        type="email"
-        placeholder="Ingrese su email"
-        value={emailValue}
-        onChange={handleEmailChange}
-        style={{ width: '300px', padding: '8px', fontSize: '16px', marginBottom: '5px' }}
-      />
-      {emailError && <p style={{ color: 'red' }}>{emailError}</p>} {/* Mensaje de error */}
-    </div>
+          {/* Email */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Ingrese su email"
+              variant="outlined"
+              size="small"
+              value={emailValue}
+              onChange={handleEmailChange}
+              error={!!emailError}
+              helperText={emailError}
+            />
+          </Grid>
+        </Grid>
+
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ mt: 3 }}
+          onClick={handleSubmit} // Llama a handleSubmit en el clic
+        >
+          Validar datos para crear interferencia
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
 export default AddressForm;
-
