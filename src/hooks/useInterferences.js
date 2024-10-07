@@ -79,7 +79,7 @@ export const useInterferences = () => {
     }
 
     const handlerRemoveInterference = (id) => {
-        if (!login.isAdmin) return;
+        
 
         Swal.fire({
             title: '¿Está seguro que desea eliminar?',

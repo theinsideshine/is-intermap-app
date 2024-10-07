@@ -10,7 +10,7 @@ import { addUser,loadingUserError,onCloseUserForm } from "../../store/slices/use
 export const useAuth = () => {
 
     const dispatch = useDispatch();
-    const { user, isAdmin, isAuth, isSuperUser } = useSelector(state => state.auth);
+    const { user, isAdmin, isAuth, isSuperUser ,isUser} = useSelector(state => state.auth);
 
     //const [login, dispatch] = useReducer(loginReducer, initialLogin);
     const navigate = useNavigate();
@@ -28,18 +28,26 @@ export const useAuth = () => {
         console.log("role: ", role);
 
         // Determinar los valores de isAdmin e isSuperUser según el rol
-        let isAdmin = false;
+        let isAdmin= false;
         let isSuperUser = false;
+        let isUser = false;
 
         if (role === 'superuser') {
             isAdmin = true;
             isSuperUser = true;
+            isUser = true;
+
         } else if (role === 'admin') {
             isAdmin = true;
             isSuperUser = false;
-        } else {  // Si es 'user' u otro rol
+            isUser = false;
+
+        } else if (role === 'user') {
             isAdmin = false;
             isSuperUser = false;
+            isUser = true;
+        } else {  // Si es 'user' u otro rol
+           console.log("error en roles")
         }
         const user = { username: username }
          // Actualizar el estado en Redux con el usuario y los roles
@@ -47,12 +55,14 @@ export const useAuth = () => {
             user,  // Actualiza el estado con el nombre de usuario
             isAdmin,  // Actualiza el estado según el rol
             isSuperUser,  // Actualiza el estado según el rol
+            isUser,
         }));
 
         sessionStorage.setItem('login', JSON.stringify({
             isAuth: true,
             isAdmin: isAdmin,
             isSuperUser: isSuperUser,
+            isUser: isUser,
             user
         }));
         sessionStorage.setItem('token', `Bearer ${token}`);
@@ -90,6 +100,7 @@ export const useAuth = () => {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('login');
         sessionStorage.clear();
+        navigate('/');
     }
 
     const handlerRegisterUser = async (user) => {
@@ -135,6 +146,7 @@ export const useAuth = () => {
             user,            
             isAdmin,
             isSuperUser,
+            isUser,
             isAuth,
         },
         handlerLogin,

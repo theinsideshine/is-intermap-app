@@ -8,6 +8,7 @@ import { LoginPage } from './auth/pages/LoginPage';
 import { useSelector } from 'react-redux';
 import { UserRoutes } from './routes/UserRoutes';
 import { SignUp } from './auth/pages/SignUpPage';
+import { AboutPage } from './pages/about/AboutPage';
 
 
 export const AppRoutes = ({ toggleDarkMode }) => {
@@ -60,6 +61,7 @@ useEffect(() => {
                                 <Route path='/*' element={<UserRoutes  kmlUrl={kmlUrl} pointCoord={pointCoord}/>} />
                             )
                             : <>
+                                <Route path='/about' element={<AboutPage />} />
                                 <Route path='/login' element={<LoginPage />} />
                                 <Route path='/signup' element={<SignUp/>} /> 
                                 <Route path='/*' element={<HomePage/>} />                               

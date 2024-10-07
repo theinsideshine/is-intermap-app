@@ -30,7 +30,7 @@ export const InterferencesList = () => {
                         {!isMobile && <TableCell>Estado</TableCell>}
                         {!isMobile && <TableCell>Ultimo cambio</TableCell>}
                         {!isMobile && <TableCell>Inicio</TableCell>}
-                        {!login.isAdmin || (
+                        {(login.isAdmin || login.isUser) &&  (
                             <>
                                 <TableCell>Mapa</TableCell>
                                 <TableCell>Editar</TableCell>

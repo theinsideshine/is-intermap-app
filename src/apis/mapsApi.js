@@ -40,4 +40,11 @@ export const savePolygon = (polygonCoords) => {
   });
 };
 
+export const savePoint = ({ coord, tolerance }) => {
+  return api.post('/save_point', {
+    coord,
+    tolerance
+  });
+};
+
 export default api;

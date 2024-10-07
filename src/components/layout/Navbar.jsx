@@ -91,9 +91,22 @@ export const Navbar = () => {
           </Typography>
         )}
 
-        <Hidden smDown>          
+        <Hidden smDown>   
 
-          <Button color="inherit" component={Link} to="/">
+
+
+          {(login.isAuth) && (
+            <>
+              <Button color="inherit" component={Link} to="/interferences">
+                Interferencias
+              </Button> {/* Nuevo botón para la página de interferencias */}   
+              
+            </>
+          )} 
+
+             
+
+          <Button color="inherit" component={Link} to="/about">
             Acerca de
           </Button>
 
@@ -102,9 +115,7 @@ export const Navbar = () => {
               <Button color="inherit" component={Link} to="/users">
                 Usuarios
               </Button>
-              <Button color="inherit" component={Link} to="/interferences">
-                Interferencias
-              </Button> {/* Nuevo botón para la página de interferencias */}
+              
             </>
           )}
         </Hidden>
@@ -136,22 +147,26 @@ export const Navbar = () => {
                       <PeopleIcon sx={{ color: theme.palette.primary.main }} />
                     </ListItemIcon>
                     <ListItemText primary="Usuarios" sx={{ color: theme.palette.text.primary }} />
-                  </ListItem>
-                  <ListItem button component={Link} to="/interferences" onClick={closeMenu}>
-                    <ListItemIcon>
-                      <InterferenceIcon sx={{ color: theme.palette.primary.main }} /> {/* Icono para interferencias */}
-                    </ListItemIcon>
-                    <ListItemText primary="Interferencias" sx={{ color: theme.palette.text.primary }} />
-                  </ListItem>
+                  </ListItem>                  
                 </>
               )}
             </List>
-            <ListItem button component={Link} to="/" onClick={closeMenu}>
+            <ListItem button component={Link} to="/about" onClick={closeMenu}>
               <ListItemIcon>
                 <CloudUploadIcon sx={{ color: theme.palette.primary.main }} />
               </ListItemIcon>
               <ListItemText primary="Acerca de" sx={{ color: theme.palette.text.primary }} />
             </ListItem>
+            {login.isAuth && (
+              <>
+            <ListItem button component={Link} to="/interferences" onClick={closeMenu}>
+              <ListItemIcon>
+                <InterferenceIcon sx={{ color: theme.palette.primary.main }} /> {/* Icono para interferencias */}
+              </ListItemIcon>
+              <ListItemText primary="Interferencias" sx={{ color: theme.palette.text.primary }} />
+            </ListItem>
+            </>
+            )}
           </Drawer>
         </Hidden>
 

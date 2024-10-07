@@ -48,7 +48,8 @@ export const InterferenceRow = ({
     
         navigate(`/viewkml/view/${id}`);
     };
-    
+     console.log("login.isAdmin",login.isAdmin);
+     console.log("login.isUser",login.isUser);
 
     return (
         <TableRow>
@@ -68,7 +69,7 @@ export const InterferenceRow = ({
                 </TableCell>
             )}
 
-            {login.isAdmin && (  // Cambiado a login.isAdmin para permitir acceso solo a admin
+            {(login.isAdmin || login.isUser) && (  // Cambiado a login.isAdmin para permitir acceso solo a admin
                 <>
                     <TableCell>
                         <IconButton

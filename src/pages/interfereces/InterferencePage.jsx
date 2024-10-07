@@ -46,7 +46,7 @@ export const InterferencePage = () => {
             <Container maxWidth="xl" sx={{ marginTop: 4 }}>
                 <div className="row">
                     <div className="col">
-                        {(visibleForm || !login.isAdmin) || (
+                        {(visibleForm ) || (
                             <Button
                                 variant="contained"
                                 color="primary"

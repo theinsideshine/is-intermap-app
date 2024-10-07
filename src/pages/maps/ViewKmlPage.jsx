@@ -4,6 +4,7 @@ import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId } from '../../config';
 import { useNavigate, useParams } from 'react-router-dom';
 import { InterferencesDetailList } from '../../components/interferences/InterferencesDetailList';
+import { Button } from '@mui/material';
 
 const containerStyle = {
   width: '100%',
@@ -22,13 +23,16 @@ const ViewKmlPage = () => {
   const kmlLayerRef = useRef(null);
 
   const Swal = useThemedSwal();
-  const navigate = useNavigate(); // Definir useNavigate
+  const navigate = useNavigate();
   const { id } = useParams();
+
+  // Convertir id a número
+  const numericId = id ? parseInt(id, 10) : 0;
 
   useEffect(() => {
     loadGoogleMaps().then(() => {
       const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: -34.644, lng: -58.473 }, // Centro predeterminado
+        center: { lat: -34.644, lng: -58.473 },
         zoom: 15,
         mapId: mapId,
       });
@@ -45,15 +49,12 @@ const ViewKmlPage = () => {
           preserveViewport: true,
         });
 
-        // Listener para manejo de errores de KML
         kmlLayerRef.current.addListener('status_changed', () => {
           const status = kmlLayerRef.current.getStatus();
           if (status !== 'OK') {
-            //Swal.fire('Error al cargar KML', `El estado de la capa KML es: ${status}`, 'error');
             console.error(`KML Layer load failed with status: ${status}`);
           } else {
             console.log('KML Layer loaded successfully');
-            // Centrar el mapa en el punto representativo después de cargar la capa KML
             if (representativePoint) {
               console.log('Centrando el mapa en el punto representativo:', representativePoint);
               map.setCenter(representativePoint);
@@ -63,7 +64,6 @@ const ViewKmlPage = () => {
           }
         });
 
-        // Listener para manejar clics en la capa KML
         kmlLayerRef.current.addListener('click', (event) => {
           const content = event.featureData.infoWindowHtml;
           Swal.fire('Información del KML', content, 'info');
@@ -76,12 +76,9 @@ const ViewKmlPage = () => {
     });
   }, [Swal]);
 
-    // Manejar la navegación al hacer clic en "Nueva Interferencia"
-    const handleCreateInterference = () => {
-      navigate("/intercheck"); 
-      
+  const handleCreateInterference = () => {
+    navigate("/intercheck");
   };
-
 
   const handleRemoveKmlLayer = () => {
     if (kmlLayerRef.current) {
@@ -94,15 +91,24 @@ const ViewKmlPage = () => {
     <div style={{ width: '100%' }}>
       <div ref={mapRef} style={containerStyle}></div>
       <div style={buttonContainerStyle}>
-     {/*  <button onClick={handleCreateInterference} style={{ marginLeft: '10px' }}>Crear interferencia</button> */}
-       {/*  <button onClick={handleRemoveKmlLayer}>Eliminar Capa KML</button> */}
+        {numericId === 0 && (
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={handleCreateInterference} 
+            style={{ marginLeft: '10px' }}
+          >
+            Crear interferencia
+          </Button>
+        )}
+        {/* <Button onClick={handleRemoveKmlLayer}>Eliminar Capa KML</Button> */}
       </div>
       <div>
-      <InterferencesDetailList id={id}/>
-    </div>
-     
+        {numericId > 0 && <InterferencesDetailList id={numericId} />}
+      </div>
     </div>
   );
 };
 
 export default ViewKmlPage;
+

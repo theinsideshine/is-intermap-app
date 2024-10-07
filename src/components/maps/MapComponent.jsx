@@ -3,7 +3,7 @@ import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId, BUCKET_TO_CHECK, BUCKET_TO_SAVE,url_storage_map } from '../../config';
 import useThemedSwal from '../../helpers/useThemedSwal';
 import { updateKmlDataInSessionStorage } from '../../helpers/storageHelper';
-import { savePolygon, verifyPoint, verifyPolygon } from '../../apis/mapsApi';
+import { savePoint, savePolygon, verifyPoint, verifyPolygon } from '../../apis/mapsApi';
 import { useNavigate } from 'react-router-dom';
 import { mapTolerance } from '../../config';
 import { useAuth } from '../../auth/hooks/useAuth';
@@ -105,7 +105,8 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
       handleResetMap();
     } else {
       setValidationMessage(`En la dirección seleccionada hay interferencia.`);
-      Swal.fire('Hay interferencia', 'Revise la opción VER KML', 'warning');
+      Swal.fire('Hay interferencia', 'Revise la interfrencia', 'warning');
+      
     }
 
     const verifyFileName = response.data.generated_file;
@@ -116,6 +117,7 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
       updateKmlDataInSessionStorage(fileUrl, representativePoint);
       console.log('Archivo guardado en:', fileUrl);
     }
+    handleViewKml();
   };
 
   const handleVerifyPolygon = () => {
@@ -228,7 +230,26 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
   };
 
 
-  const handleSavePoint = () => {};
+  const handleSavePoint = () => {
+
+    if (pathCoords.current.length > 0) {
+      const { lat, lng } = pathCoords.current[pathCoords.current.length - 1];      
+      const tolerance = mapTolerance;
+      console.log('Punto capturado para enviar:', { lat, lng });
+      console.log('Tolerancia:', tolerance);
+
+      savePoint({ coord: [lat, lng], tolerance })
+        .then(handleServerResponseSave)
+        .catch(error => {
+          console.error('Error al enviar los datos:', error);
+        });
+    } else {
+      console.log('No se ha capturado ningún punto.');
+      Swal.fire('Ingrese el punto', 'No se ha capturado ningún punto.', 'warning');
+    }
+
+
+  };
 
 
   const handleResetMap = () => {
@@ -252,7 +273,7 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
       <div style={buttonContainerStyle}>
         <button onClick={handleVerifyPolygon}>Verificar Polígono</button>
         <button onClick={handleVerifyPoint} style={{ marginLeft: '10px' }}>Verificar Punto</button>
-        <button onClick={handleViewKml} style={{ marginLeft: '10px' }}>Ver Interferencia</button>
+        {/* <button onClick={handleViewKml} style={{ marginLeft: '10px' }}>Ver Interferencia</button> */}
         <button onClick={handleResetMap} style={{ marginLeft: '10px' }}>Reiniciar Mapa</button>
 
       </div>
