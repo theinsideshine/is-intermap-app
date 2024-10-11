@@ -13,7 +13,7 @@ const initialLoginForm = {
 export const LoginPage = () => {
   const theme = useTheme(); // Obtén el tema actual
   const { handlerLogin } = useAuth();
-  const [ setLoginForm] = useState(initialLoginForm);
+  const [LoginForm, setLoginForm] = useState(initialLoginForm);
 
   const onSubmit = (event) => {
     event.preventDefault();
