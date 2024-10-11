@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { loadGoogleMaps } from '../../helpers/googleMapsLoader';
 import { mapId, BUCKET_TO_CHECK, BUCKET_TO_SAVE,url_storage_map } from '../../config';
 import useThemedSwal from '../../helpers/useThemedSwal';
@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { mapTolerance } from '../../config';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { useInterferences } from '../../hooks/useInterferences';
-import { InterferencesDetailList } from '../interferences/InterferencesDetailList';
 import { Button } from '@mui/material';
 
 const containerStyle = {
@@ -24,20 +23,10 @@ const buttonContainerStyle = {
   marginTop: '10px',
 };
 
-const validationMessageStyle = {
-  marginTop: '30px',
-  padding: '10px',
-  textAlign: 'center',
-  backgroundColor: '#f0f0f0',
-  borderRadius: '5px',
-  border: '1px solid #ccc',
-  color: '#333',
-  width: '60%',
-  margin: '0 auto',
-};
+
 
 const MapComponent = ({ coordinates, email , address, company, isFormValid }) => { // Recibir el email como prop
-  const [validationMessage, setValidationMessage] = useState('');
+ 
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const polygonRef = useRef(null);
@@ -100,11 +89,11 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
     console.log('Interferencia:', response.data.intersects);
 
     if (response.data.intersects === false) {
-      setValidationMessage(`En la dirección seleccionada no hay interferencia.`);
+     
       Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
       handleResetMap();
     } else {
-      setValidationMessage(`En la dirección seleccionada hay interferencia.`);
+      
       Swal.fire('Hay interferencia', 'Revise la interfrencia', 'warning');
       
     }
@@ -156,21 +145,7 @@ const MapComponent = ({ coordinates, email , address, company, isFormValid }) =>
 
   const handleServerResponseSave = (response) => {
     console.log('Respuesta del servidor:', response.data);
-    console.log('Interferencia:', response.data.intersects);
-
-   /*  if (response.data.intersects === false) {
-      setValidationMessage(`En la dirección seleccionada no hay interferencia.`);
-      Swal.fire('No hay interferencia!', 'Puede realizar el trabajo en campo', 'success');
-      handleResetMap();
-    } else {
-      setValidationMessage(`En la dirección seleccionada hay interferencia.`);
-      Swal.fire('Hay interferencia', 'Revise la opción VER KML', 'warning');
-    } */
-
-   // Guardar los valores en los estados
-   //setInterference(response.data.intersects);
-   //setFileName(response.data.generated_file);
-   //setPointReference(response.data.point_reference);
+    console.log('Interferencia:', response.data.intersects);  
    
 
    const fileUrl = `${url_storage_map}/${BUCKET_TO_SAVE}/${response.data.generated_file}`;

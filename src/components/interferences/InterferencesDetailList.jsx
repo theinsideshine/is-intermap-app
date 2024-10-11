@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useInterferences } from "../../hooks/useInterferences";
-import { useAuth } from "../../auth/hooks/useAuth";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,8 +11,7 @@ import { InterferenceDetailRow } from "./InterferenceDetailRow";
 import { useMediaQuery } from "@mui/material";
 
 export const InterferencesDetailList = ({ id }) => {
-    const { interferences = [], initialInterferenceForm } = useInterferences();
-    const { login } = useAuth();
+    const { interferences = [], initialInterferenceForm } = useInterferences();    
     const [interferenceSelected, setInterferenceSelected] = useState(initialInterferenceForm);
 
     // Verificar si es una vista móvil
@@ -22,11 +20,11 @@ export const InterferencesDetailList = ({ id }) => {
     useEffect(() => {
         console.log('En viewKmlPage = ' + id);
         if (id) {
-            const interference = interferences.find(a => a.id == id) || initialInterferenceForm;
+            const interference = interferences.find(a => a.id === id) || initialInterferenceForm;
             setInterferenceSelected(interference);
         }
-    }, [id]);
-
+    }, [id,initialInterferenceForm,interferences]);
+ 
     return (
         <TableContainer component={Paper}>
             <Table aria-label="Interferences Table">

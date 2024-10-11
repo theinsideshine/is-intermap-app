@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useUsers } from "../../hooks/useUsers";
-import { Button, Checkbox, FormControlLabel } from "@mui/material";
+import { Button } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/system';
 
-const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  '&.Mui-checked': {
-    color: theme.palette.primary.main,
-  },
-}));
 
-const CustomFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
-  color: theme.palette.text.primary,
-}));
 
 export const UserForm = ({ userSelected, handlerCloseForm }) => {
   const { initialUserForm, handlerAddUser, errors } = useUsers();

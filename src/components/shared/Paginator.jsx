@@ -7,7 +7,7 @@ export const Paginator = ({ url, paginator }) => {
 
     return (
         <>
-            {paginator?.totalPages == 1 ||
+            {paginator?.totalPages === 1 ||
                 <ul className="pagination">
 
                     <li   className={paginator.first ? 'page-item disabled' : 'page-item'}>
@@ -17,7 +17,7 @@ export const Paginator = ({ url, paginator }) => {
                             </svg></Link>
                     </li>
 
-                    {paginator.number == 0 ||
+                    {paginator.number === 0 ||
 
                         <li className="page-item">
                             <Link style={{ backgroundColor: theme.palette.primary.main, color: '#FFFFFF'  }} className="page-link" to={`${url}/${paginator.number - 1}`}>

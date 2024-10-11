@@ -79,13 +79,7 @@ const ViewKmlPage = () => {
   const handleCreateInterference = () => {
     navigate("/intercheck");
   };
-
-  const handleRemoveKmlLayer = () => {
-    if (kmlLayerRef.current) {
-      kmlLayerRef.current.setMap(null);
-      kmlLayerRef.current = null;
-    }
-  };
+ 
 
   return (
     <div style={{ width: '100%' }}>

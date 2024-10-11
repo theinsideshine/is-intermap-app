@@ -15,7 +15,7 @@ import { useAuth } from '../hooks/useAuth';
 export const SignUp = () => {
 
   const theme = useTheme(); // Obtener el tema actual
-  const { initialUserForm, handlerAddUser, errors } = useUsers();
+  const { errors } = useUsers();
 
   
   const { handlerRegisterUser } = useAuth();

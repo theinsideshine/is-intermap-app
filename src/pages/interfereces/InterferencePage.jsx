@@ -9,7 +9,6 @@ import { InterferencesList } from "../../components/interferences/InterferencesL
 import { useInterferences } from "../../hooks/useInterferences";
 import { Paginator } from "../../components/shared/Paginator";
 import LoadingIndicator from "../../components/layout/LoadingIndicator";
-import { useAuth } from "../../auth/hooks/useAuth";
 import { InterferenceModalForm } from "../../components/interferences/InterferenceModalForm";
 
 export const InterferencePage = () => {
@@ -19,16 +18,14 @@ export const InterferencePage = () => {
         interferences,
         visibleForm,
         isLoading,
-        paginator,
-        handlerOpenInterferenceForm,
+        paginator,       
         getInterferences,
     } = useInterferences();
-
-    const { login } = useAuth();
+    
 
     useEffect(() => {
         getInterferences(page);
-    }, [page]);
+    }, [page,getInterferences]);
 
     // Manejar la navegación al hacer clic en "Nueva Interferencia"
     const handleNewInterference = () => {

@@ -28,7 +28,7 @@ export const UsersPage = () => {
 
     useEffect(() => {
         getUsers(page);
-    }, [page]);
+    }, [page,getUsers ]);
 
     if (isLoading) {
         return (

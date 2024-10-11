@@ -1,12 +1,7 @@
 import React from "react";
-import { useInterferences } from "../../hooks/useInterferences";
-import { useAuth } from "../../auth/hooks/useAuth";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useTheme } from '@mui/material/styles'; // Importa useTheme
+
 
 
 export const InterferenceDetailRow = ({ 
@@ -23,10 +18,8 @@ export const InterferenceDetailRow = ({
     interference,
     isMobile
 }) => {
-    const theme = useTheme(); // Obtiene el tema personalizado
-    const { handlerInterferenceSelectedForm, handlerRemoveInterference } = useInterferences();
-    const { login } = useAuth();
-
+    
+  
     return (
         <TableRow>
             <TableCell>{id}</TableCell>
