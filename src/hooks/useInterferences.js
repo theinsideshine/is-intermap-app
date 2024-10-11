@@ -26,7 +26,7 @@ export const useInterferences = () => {
     const { interferences, interferenceSelected, visibleForm, errors, isLoading, paginator } = useSelector(state => state.interferences);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { login, handlerLogout } = useAuth();
+    const {  handlerLogout } = useAuth();
 
     const getInterferences = async (page = 0) => {
         try {            
@@ -57,11 +57,12 @@ export const useInterferences = () => {
                 (interference.id === 0) ? 
                 'Interferencia Creada' : 
                 'Interferencia Actualizada',
-                (interference.interference) ? 
-                'No hay interferencia' : 
-                'Si hay interferencia',
+                (interference.id === 0) ? 
+                    ((!interference.interference) ? 'No hay interferencia' : 'Si hay interferencia') :
+                    'Estado actualizado',
                 'success'
             );
+            
             handlerCloseInterferenceForm();
             navigate('/interferences');
         } catch (error) {

@@ -1,9 +1,13 @@
 import React from 'react';
-import { CssBaseline, Typography, Box } from '@mui/material';
+import { CssBaseline, Typography, Box, Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export const AboutPage = () => {
   const theme = useTheme(); // Obtén el tema actual
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const { isAuth } = useSelector(state => state.auth);
 
   return (
     <>
@@ -52,6 +56,26 @@ export const AboutPage = () => {
           que puedan afectar sistemas críticos. Trabajamos continuamente para mejorar la funcionalidad y 
           usabilidad de ISMap, incorporando nuevas características basadas en las necesidades de nuestros usuarios.
         </Typography>
+        {(!isAuth) && ( 
+        <Button
+              variant="contained"
+              component={Link} to="/login"
+              sx={{
+                width: isMobile ? '50%' : '20%', // Ajusta el ancho del botón dependiendo del tamaño del viewport
+                height: '40px', // Altura del botón
+                bgcolor: 'primary.main',
+                color: 'white',
+                fontSize: '0.8rem', // Tamaño de fuente del botón
+                '&:hover': {
+                  bgcolor: 'primary.dark', // Color de fondo al pasar el mouse
+                },
+                
+              }}
+            >
+          Entrar
+        </Button>
+      )}
+
       </Box>
     </>
   );

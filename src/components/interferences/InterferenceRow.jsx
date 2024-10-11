@@ -48,8 +48,8 @@ export const InterferenceRow = ({
     
         navigate(`/viewkml/view/${id}`);
     };
-     console.log("login.isAdmin",login.isAdmin);
-     console.log("login.isUser",login.isUser);
+    // console.log("login.isAdmin",login.isAdmin);
+    // console.log("login.isUser",login.isUser);
 
     return (
         <TableRow>
@@ -68,7 +68,7 @@ export const InterferenceRow = ({
                     {new Date(start).toLocaleDateString('en-CA', { timeZone: 'UTC' })}
                 </TableCell>
             )}
-
+            {login.isAdmin && <TableCell>{username}</TableCell>}
             {(login.isAdmin || login.isUser) && (  // Cambiado a login.isAdmin para permitir acceso solo a admin
                 <>
                     <TableCell>

@@ -2,6 +2,7 @@ import React from 'react';
 import { CssBaseline, Typography, useMediaQuery, Grid, Box, Button } from '@mui/material';
 import torreImage from '../../assets/torre_tesla.png';
 import { useTheme } from '@mui/material/styles';
+import { Link } from "react-router-dom";
 
 
 export const HomePage = () => {
@@ -47,6 +48,7 @@ export const HomePage = () => {
 >
   <Button
     variant="contained"
+    component={Link} to="/login"
     sx={{
       width: isMobile ? '50%' : '20%', // Ajusta el ancho del botón dependiendo del tamaño del viewport
       height: '40px', // Altura del botón
@@ -56,9 +58,10 @@ export const HomePage = () => {
       '&:hover': {
         bgcolor: 'primary.dark', // Color de fondo al pasar el mouse
       },
+      
     }}
   >
-    Verificar
+    Entrar
   </Button>
 </Box>
 

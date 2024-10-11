@@ -22,7 +22,7 @@ export const useUsers = () => {
             console.log(result);
             dispatch(loadingUsers(result.data));
         } catch (error) {
-            if (error.response?.status == 401) {
+            if (error.response?.status === 401) {
                 handlerLogout();
             }
         }
@@ -38,6 +38,7 @@ export const useUsers = () => {
 
             if (user.id === 0) {
                 response = await serviceSaveUser(user);
+                console.log("response alta:",response.data)
                 dispatch(addUser(response.data))
             } else {
                 response = await serviceUpdateUser(user);
@@ -57,14 +58,14 @@ export const useUsers = () => {
             navigate('/users');
         } catch (error) {
             console.log(error);
-            if (error.response && error.response.status == 400) {
+            if (error.response && error.response.status === 400) {
                 
                 dispatch(loadingUserError(error.response.data));
 
-            }else if (error.response && error.response.status == 500 ) {
+            }else if (error.response && error.response.status === 500 ) {
 
                     console.log('error: ',error);               
-            } else if (error.response?.status == 401) {
+            } else if (error.response?.status === 401) {
                 handlerLogout();
             } else {
                 throw error;
@@ -100,7 +101,7 @@ export const useUsers = () => {
                     );
                 } catch (error) {
                     console.log('Error al eliminar: '+error.response.data);
-                    if (error.response?.status == 401) {
+                    if (error.response?.status === 401) {
                         handlerLogout();
                     }
                 }

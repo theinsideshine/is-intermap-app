@@ -23,13 +23,14 @@ export const InterferencesList = () => {
             <Table aria-label="Interferences Table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Solicitud</TableCell>
+                        <TableCell>Id</TableCell>
                         {!isMobile && <TableCell>Empresa</TableCell>}
                         {!isMobile && <TableCell>Direccion</TableCell>}
-                        {!isMobile && <TableCell>Inteferencia</TableCell>}
+                        {!isMobile && <TableCell>Interfer.</TableCell>}
                         {!isMobile && <TableCell>Estado</TableCell>}
-                        {!isMobile && <TableCell>Ultimo cambio</TableCell>}
+                        {!isMobile && <TableCell>Ultimo</TableCell>}
                         {!isMobile && <TableCell>Inicio</TableCell>}
+                        {login.isAdmin && <TableCell>Username</TableCell>}
                         {(login.isAdmin || login.isUser) &&  (
                             <>
                                 <TableCell>Mapa</TableCell>
