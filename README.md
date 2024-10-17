@@ -28,7 +28,6 @@ Interference List
 Interference Id
 ![](public/images/interferenceId.png)
 
-
 Interference Save
 ![](public/images/interferencia_save.png)
 
